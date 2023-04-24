@@ -11,8 +11,9 @@ plugins {
 // 지정된 버전의 node를 다운로드하게 만드는 설정
 // $ gradle npmSetup 을 실행하여 node 프로그램을 설치한다.
 node {
-  version = '17.6.0'
-  npmVersion = '8.5.1'
+  //최신버전으로 받아라
+  //version = '17.6.0'
+  //npmVersion = '8.5.1'
   download = true
 }
 /*
@@ -23,6 +24,7 @@ tasks.register("npm-install") {
 }
 */
 task appNpmInstall(type: NpmTask) {
+  dependsOn "npmSetup"
   description = "Installs dependencies from package.json"
   workingDir = file("${projectDir}/src/main/resources/static");
   args = ["install"]
@@ -87,4 +89,9 @@ tasks.named('test') {
 
 application {
     mainClass = 'bitcamp.myapp.App'
+}
+
+processResources {
+  //dependsOn "copyWebApp"
+  dependsOn "appNpmInstall"
 }
